@@ -1,0 +1,71 @@
+@startuml FileSystemDemo
+
+' === Interfaces ===
+interface FileSystemComponent {
+    +getName(): String
+    +accept(visitor: FileSystemVisitor): void
+}
+
+interface FileSystemVisitor {
+    +visit(file: File): void
+    +visit(directory: Directory): void
+}
+
+interface Iterable {
+    +iterator(): Iterator
+}
+
+interface Iterator {
+}
+
+' === Classes ===
+class File {
+    -name: String
+    -size: int
+    +File(name: String, size: int)
+    +getSize(): int
+    +getName(): String
+    +accept(visitor: FileSystemVisitor): void
+}
+
+class Directory {
+    -name: String
+    -children: List<FileSystemComponent>
+    +Directory(name: String)
+    +add(component: FileSystemComponent): void
+    +getName(): String
+    +accept(visitor: FileSystemVisitor): void
+    +iterator(): Iterator
+}
+
+class SizeCalculator {
+    -totalSize: int
+    +getTotalSize(): int
+    +visit(file: File): void
+    +visit(directory: Directory): void
+}
+
+class StructurePrinter {
+    -indent: int
+    +visit(file: File): void
+    +visit(directory: Directory): void
+}
+
+class FileSystemDemo {
+    +main(args: String[]): void
+}
+
+' === Relationships ===
+File -|> FileSystemComponent
+Directory -|> FileSystemComponent
+Directory ..|> Iterable
+Directory --> "children" FileSystemComponent : contains
+
+SizeCalculator ..|> FileSystemVisitor
+StructurePrinter ..|> FileSystemVisitor
+
+FileSystemDemo --> Directory
+FileSystemDemo --> SizeCalculator
+FileSystemDemo --> StructurePrinter
+
+@enduml
