@@ -55,17 +55,19 @@ class FileSystemDemo {
     +main(args: String[]): void
 }
 
-' === Relationships ===
-File -|> FileSystemComponent
-Directory -|> FileSystemComponent
+' === Correct UML relationships ===
+File ..|> FileSystemComponent
+Directory ..|> FileSystemComponent
 Directory ..|> Iterable
-Directory --> "children" FileSystemComponent : contains
 
 SizeCalculator ..|> FileSystemVisitor
 StructurePrinter ..|> FileSystemVisitor
 
+Directory --> "children" FileSystemComponent : contains
 FileSystemDemo --> Directory
 FileSystemDemo --> SizeCalculator
 FileSystemDemo --> StructurePrinter
+Directory --> Iterator : returns
 
 @enduml
+
