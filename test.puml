@@ -1,0 +1,58 @@
+@startuml
+class StructurePrinter {
+- int indent
++ void visit(File)
++ void visit(Directory)
+- void printIndent()
+}
+
+
+class Directory {
+- String name
+- List<FileSystemComponent> children
++ void add(FileSystemComponent)
++ void accept(FileSystemVisitor)
++ Iterator<FileSystemComponent> iterator()
++ String getName()
+}
+
+
+class FileSystemDemo {
++ {static} void main(String[])
+}
+
+class File {
+- String name
+- int size
++ int getSize()
++ void accept(FileSystemVisitor)
++ String getName()
+}
+
+
+interface FileSystemComponent {
+~ String getName()
+~ void accept(FileSystemVisitor)
+}
+
+interface FileSystemVisitor {
+~ void visit(File)
+~ void visit(Directory)
+}
+
+class SizeCalculator {
+- int totalSize
++ int getTotalSize()
++ void visit(File)
++ void visit(Directory)
+}
+
+
+
+
+FileSystemVisitor <|.. StructurePrinter
+FileSystemComponent <|.. Directory
+Iterable <|.. Directory
+FileSystemComponent <|.. File
+FileSystemVisitor <|.. SizeCalculator
+@enduml
